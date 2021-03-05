@@ -2,7 +2,6 @@
   "expo": {
     "name": "voke-expo",
     "slug": "voke-expo",
-    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,16 +16,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "0.0.1"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "versionCode": 400000001
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "version": "0.0.1"
   }
 }
