@@ -19,5 +19,4 @@ jobs:
           expo-token: ${{ secrets.EXPO_TOKEN }}
           expo-packager: npm
           expo-cache: true
-      - run: npm install
       - run: expo publish

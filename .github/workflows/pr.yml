@@ -19,7 +19,6 @@ jobs:
           expo-token: ${{ secrets.EXPO_TOKEN }}
           expo-packager: npm
           expo-cache: true
-      - run: yarn install
       - run: expo publish --release-channel=pr-${{ github.event.number }}
       - uses: unsplash/comment-on-pr@master
         env:
