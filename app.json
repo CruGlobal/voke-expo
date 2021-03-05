@@ -17,18 +17,18 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "0.0.2"
+      "buildNumber": "0.0.1"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "versionCode": 400000002
+      "versionCode": 400000001
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "version": "0.0.2"
+    "version": "0.0.1"
   }
 }
