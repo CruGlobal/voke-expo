@@ -18,17 +18,25 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "0.0.1"
+      "buildNumber": "0.0.1",
+      "bundleIdentifier": "org.cru.voke-expo"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "versionCode": 400000001
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "FACEBOOK_APP_ID": "443564482511817",
+      "FIREBASE_API_KEY": "AIzaSyCGojK3V-Rukfp0kR44JJj27pd-f5H6Ko0",
+      "FIREBASE_APP_ID": "1:360680446899:web:5fcf32ce870ef1dd7e49c6",
+      "FIREBASE_AUTH_DOMAIN": "voke-6ee71.firebaseapp.com",
+      "FIREBASE_PROJECT_ID": "voke-6ee71"
     },
     "version": "0.0.1"
   }

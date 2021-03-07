@@ -34,6 +34,12 @@
     "import/extensions": ["error", "never"],
     "react/prop-types": 0,
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["error"]
+    "@typescript-eslint/no-shadow": ["error"],
+    "consistent-return": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+    "react/style-prop-object": ["error", {
+      "allow": ["StatusBar"]
+    }]
   }
 }
