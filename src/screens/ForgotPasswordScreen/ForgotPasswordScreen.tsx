@@ -1,6 +1,7 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
-import { emailValidator } from "../../core/utils";
+import { Formik } from "formik";
+import * as Yup from "yup";
 import Background from "../../components/Background";
 import BackButton from "../../components/BackButton";
 import Logo from "../../components/Logo";
@@ -9,6 +10,7 @@ import TextInput from "../../components/TextInput";
 import theme from "../../core/theme";
 import Button from "../../components/Button";
 import { Navigation } from "../../types";
+import firebaseClient from "../../core/firebaseClient";
 
 const styles = StyleSheet.create({
   back: {
@@ -28,20 +30,11 @@ type Props = {
   navigation: Navigation;
 };
 
+const ForgotPasswordSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Required"),
+});
+
 const ForgotPasswordScreen = ({ navigation }: Props): ReactElement => {
-  const [email, setEmail] = useState({ value: "", error: "" });
-
-  const onSendPressed = () => {
-    const emailError = emailValidator(email.value);
-
-    if (emailError) {
-      setEmail({ ...email, error: emailError });
-      return;
-    }
-
-    navigation.navigate("LoginScreen");
-  };
-
   return (
     <Background>
       <BackButton goBack={() => navigation.navigate("LoginScreen")} />
@@ -49,23 +42,66 @@ const ForgotPasswordScreen = ({ navigation }: Props): ReactElement => {
       <Logo />
 
       <Header>Restore Password</Header>
+      <Formik
+        initialValues={{
+          email: "",
+        }}
+        validationSchema={ForgotPasswordSchema}
+        onSubmit={async ({ email }, { setErrors }) => {
+          try {
+            await firebaseClient.auth().sendPasswordResetEmail(email);
+            navigation.navigate("LoginScreen");
+          } catch (ex) {
+            switch (ex.code) {
+              case "auth/user-not-found":
+                setErrors({
+                  email: "Email address not found. Please try again.",
+                });
+                break;
+              default:
+                setErrors({
+                  email: "An unexpected error occurred. Please try again.",
+                });
+            }
+          }
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          isSubmitting,
+          isValid,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+        }) => (
+          <>
+            <TextInput
+              label="E-mail address"
+              returnKeyType="done"
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              value={values.email}
+              error={Boolean(errors.email && touched.email)}
+              errorText={errors.email}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              textContentType="emailAddress"
+              keyboardType="email-address"
+            />
 
-      <TextInput
-        label="E-mail address"
-        returnKeyType="done"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: "" })}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
-
-      <Button mode="contained" onPress={onSendPressed} style={styles.button}>
-        Send Reset Instructions
-      </Button>
+            <Button
+              mode="contained"
+              onPress={handleSubmit}
+              disabled={!isValid || isSubmitting}
+              style={styles.button}
+            >
+              Send Reset Instructions
+            </Button>
+          </>
+        )}
+      </Formik>
 
       <TouchableOpacity
         style={styles.back}

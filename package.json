@@ -12,6 +12,8 @@
     "standard-version": "standard-version"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.11",
+    "@react-native-async-storage/async-storage": "^1.14.1",
     "expo": "~40.0.0",
     "expo-apple-authentication": "~2.2.2",
     "expo-constants": "~9.3.3",

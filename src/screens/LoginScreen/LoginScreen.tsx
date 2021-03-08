@@ -1,5 +1,8 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import firebaseClient from "../../core/firebaseClient";
 import Background from "../../components/Background";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
@@ -7,7 +10,6 @@ import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
 import BackButton from "../../components/BackButton";
 import theme from "../../core/theme";
-import { emailValidator, passwordValidator } from "../../core/utils";
 import { Navigation } from "../../types";
 
 const styles = StyleSheet.create({
@@ -33,22 +35,17 @@ type Props = {
   navigation: Navigation;
 };
 
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Required"),
+  password: Yup.string().required("Required"),
+});
+
 const LoginScreen = ({ navigation }: Props): ReactElement => {
-  const [email, setEmail] = useState({ value: "", error: "" });
-  const [password, setPassword] = useState({ value: "", error: "" });
-
-  const onLoginPressed = () => {
-    const emailError = emailValidator(email.value);
-    const passwordError = passwordValidator(password.value);
-
-    if (emailError || passwordError) {
-      setEmail({ ...email, error: emailError });
-      setPassword({ ...password, error: passwordError });
-      return;
-    }
-
-    navigation.navigate("Dashboard");
-  };
+  useEffect(() => {
+    return firebaseClient.auth().onIdTokenChanged((user) => {
+      if (user) navigation.navigate("DashboardScreen");
+    });
+  }, [navigation]);
 
   return (
     <Background>
@@ -58,40 +55,98 @@ const LoginScreen = ({ navigation }: Props): ReactElement => {
 
       <Header>Welcome back.</Header>
 
-      <TextInput
-        label="Email"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: "" })}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+        }}
+        validationSchema={LoginSchema}
+        onSubmit={async ({ email, password }, { setErrors }) => {
+          try {
+            await firebaseClient
+              .auth()
+              .signInWithEmailAndPassword(email, password);
+          } catch (ex) {
+            switch (ex.code) {
+              case "auth/user-disabled":
+                setErrors({
+                  email:
+                    "This email address account has been disabled. Please try again.",
+                });
+                break;
+              case "auth/user-not-found":
+                setErrors({
+                  email: "Email address not found. Please try again.",
+                });
+                break;
+              case "auth/wrong-password":
+                setErrors({
+                  password:
+                    "password does not match the given email. Please try again.",
+                });
+                break;
+              default:
+                setErrors({
+                  email: "An unexpected error occurred. Please try again.",
+                });
+            }
+          }
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          isSubmitting,
+          isValid,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+        }) => (
+          <>
+            <TextInput
+              label="Email"
+              returnKeyType="next"
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              value={values.email}
+              error={Boolean(errors.email && touched.email)}
+              errorText={errors.email}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              textContentType="emailAddress"
+              keyboardType="email-address"
+            />
 
-      <TextInput
-        label="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: "" })}
-        error={!!password.error}
-        errorText={password.error}
-        secureTextEntry
-      />
+            <TextInput
+              label="Password"
+              returnKeyType="done"
+              onChangeText={handleChange("password")}
+              onBlur={handleBlur("password")}
+              value={values.password}
+              error={Boolean(errors.password && touched.password)}
+              errorText={errors.password}
+              secureTextEntry
+            />
 
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("ForgotPasswordScreen")}
-        >
-          <Text style={styles.label}>Forgot your password?</Text>
-        </TouchableOpacity>
-      </View>
+            <View style={styles.forgotPassword}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ForgotPasswordScreen")}
+              >
+                <Text style={styles.label}>Forgot your password?</Text>
+              </TouchableOpacity>
+            </View>
 
-      <Button mode="contained" onPress={onLoginPressed}>
-        Login
-      </Button>
+            <Button
+              mode="contained"
+              onPress={handleSubmit}
+              disabled={!isValid || isSubmitting}
+            >
+              Login
+            </Button>
+          </>
+        )}
+      </Formik>
 
       <View style={styles.row}>
         <Text style={styles.label}>Don’t have an account? </Text>
