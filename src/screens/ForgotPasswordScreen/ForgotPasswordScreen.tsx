@@ -2,14 +2,13 @@ import React, { ReactElement } from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useNavigation } from "@react-navigation/native";
 import Background from "../../components/Background";
-import BackButton from "../../components/BackButton";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
 import TextInput from "../../components/TextInput";
 import theme from "../../core/theme";
 import Button from "../../components/Button";
-import { Navigation } from "../../types";
 import firebaseClient from "../../core/firebaseClient";
 
 const styles = StyleSheet.create({
@@ -26,19 +25,15 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {
-  navigation: Navigation;
-};
-
 const ForgotPasswordSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
 });
 
-const ForgotPasswordScreen = ({ navigation }: Props): ReactElement => {
+const ForgotPasswordScreen = (): ReactElement => {
+  const navigation = useNavigation();
+
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate("LoginScreen")} />
-
       <Logo />
 
       <Header>Restore Password</Header>
@@ -50,7 +45,7 @@ const ForgotPasswordScreen = ({ navigation }: Props): ReactElement => {
         onSubmit={async ({ email }, { setErrors }) => {
           try {
             await firebaseClient.auth().sendPasswordResetEmail(email);
-            navigation.navigate("LoginScreen");
+            navigation.navigate("Login");
           } catch (ex) {
             switch (ex.code) {
               case "auth/user-not-found":
@@ -105,7 +100,7 @@ const ForgotPasswordScreen = ({ navigation }: Props): ReactElement => {
 
       <TouchableOpacity
         style={styles.back}
-        onPress={() => navigation.navigate("LoginScreen")}
+        onPress={() => navigation.navigate("Login")}
       >
         <Text style={styles.label}>← Back to login</Text>
       </TouchableOpacity>

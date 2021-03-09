@@ -1,16 +1,15 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useNavigation } from "@react-navigation/native";
 import firebaseClient from "../../core/firebaseClient";
 import Background from "../../components/Background";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
-import BackButton from "../../components/BackButton";
 import theme from "../../core/theme";
-import { Navigation } from "../../types";
 
 const styles = StyleSheet.create({
   forgotPassword: {
@@ -31,26 +30,16 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {
-  navigation: Navigation;
-};
-
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().required("Required"),
 });
 
-const LoginScreen = ({ navigation }: Props): ReactElement => {
-  useEffect(() => {
-    return firebaseClient.auth().onIdTokenChanged((user) => {
-      if (user) navigation.navigate("DashboardScreen");
-    });
-  }, [navigation]);
+const LoginScreen = (): ReactElement => {
+  const navigation = useNavigation();
 
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate("HomeScreen")} />
-
       <Logo />
 
       <Header>Welcome back.</Header>
@@ -131,7 +120,7 @@ const LoginScreen = ({ navigation }: Props): ReactElement => {
 
             <View style={styles.forgotPassword}>
               <TouchableOpacity
-                onPress={() => navigation.navigate("ForgotPasswordScreen")}
+                onPress={() => navigation.navigate("ForgotPassword")}
               >
                 <Text style={styles.label}>Forgot your password?</Text>
               </TouchableOpacity>
@@ -150,7 +139,7 @@ const LoginScreen = ({ navigation }: Props): ReactElement => {
 
       <View style={styles.row}>
         <Text style={styles.label}>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
           <Text style={styles.link}>Sign up</Text>
         </TouchableOpacity>
       </View>

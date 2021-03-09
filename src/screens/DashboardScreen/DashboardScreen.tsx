@@ -1,35 +1,41 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
+import { gql, useQuery } from "@apollo/client";
 import Background from "../../components/Background";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
 import Paragraph from "../../components/Paragraph";
 import Button from "../../components/Button";
-import { Navigation } from "../../types";
 import firebaseClient from "../../core/firebaseClient";
+import { MeQuery } from "../../../types/MeQuery";
+import apolloClient from "../../core/apolloClient";
 
-type Props = {
-  navigation: Navigation;
-};
+const ME_QUERY = gql`
+  query MeQuery {
+    me {
+      id
+      givenName
+      familyName
+      nickname
+      locale
+      email
+      emailVerified
+    }
+  }
+`;
 
-const Dashboard = ({ navigation }: Props): ReactElement => {
-  useEffect(() => {
-    return firebaseClient.auth().onIdTokenChanged((user) => {
-      if (!user) navigation.navigate("HomeScreen");
-    });
-  }, [navigation]);
+const DashboardScreen = (): ReactElement => {
+  const { data } = useQuery<MeQuery>(ME_QUERY);
 
-  const handleLogoutPressed = (): void => {
-    firebaseClient.auth().signOut();
+  const handleLogoutPressed = async (): Promise<void> => {
+    await apolloClient.resetStore();
+    await firebaseClient.auth().signOut();
   };
 
   return (
     <Background>
       <Logo />
-      <Header>Let’s start</Header>
-      <Paragraph>
-        Your amazing app starts here. Open you favourite code editor and start
-        editing this project.
-      </Paragraph>
+      <Header>Fetching Your Profile</Header>
+      <Paragraph>{data?.me.id}</Paragraph>
       <Button mode="outlined" onPress={handleLogoutPressed}>
         Logout
       </Button>
@@ -37,4 +43,4 @@ const Dashboard = ({ navigation }: Props): ReactElement => {
   );
 };
 
-export default Dashboard;
+export default DashboardScreen;

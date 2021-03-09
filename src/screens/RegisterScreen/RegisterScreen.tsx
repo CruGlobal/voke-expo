@@ -1,16 +1,15 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useNavigation } from "@react-navigation/native";
 import firebaseClient from "../../core/firebaseClient";
 import Background from "../../components/Background";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
-import BackButton from "../../components/BackButton";
 import theme from "../../core/theme";
-import { Navigation } from "../../types";
 
 const styles = StyleSheet.create({
   label: {
@@ -29,26 +28,16 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {
-  navigation: Navigation;
-};
-
 const RegisterSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().required("Required"),
 });
 
-const RegisterScreen = ({ navigation }: Props): ReactElement => {
-  useEffect(() => {
-    return firebaseClient.auth().onIdTokenChanged((user) => {
-      if (user) navigation.navigate("DashboardScreen");
-    });
-  }, [navigation]);
+const RegisterScreen = (): ReactElement => {
+  const navigation = useNavigation();
 
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate("HomeScreen")} />
-
       <Logo />
 
       <Header>Create Account</Header>
@@ -139,7 +128,7 @@ const RegisterScreen = ({ navigation }: Props): ReactElement => {
 
       <View style={styles.row}>
         <Text style={styles.label}>Already have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.link}>Login</Text>
         </TouchableOpacity>
       </View>
