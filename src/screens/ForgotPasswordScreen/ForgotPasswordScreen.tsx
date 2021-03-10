@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
@@ -84,6 +84,7 @@ const ForgotPasswordScreen = (): ReactElement => {
               autoCompleteType="email"
               textContentType="emailAddress"
               keyboardType="email-address"
+              testID="email"
             />
 
             <Button
@@ -97,13 +98,6 @@ const ForgotPasswordScreen = (): ReactElement => {
           </>
         )}
       </Formik>
-
-      <TouchableOpacity
-        style={styles.back}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={styles.label}>← Back to login</Text>
-      </TouchableOpacity>
     </Background>
   );
 };
