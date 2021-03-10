@@ -21,16 +21,17 @@ const styles = StyleSheet.create({
 
 type Props = React.ComponentProps<typeof Input> & { errorText?: string };
 
-const TextInput = ({ errorText, ...props }: Props): ReactElement => (
+const TextInput = ({ error, errorText, ...props }: Props): ReactElement => (
   <View style={styles.container}>
     <Input
       style={styles.input}
       selectionColor={theme.colors.primary}
       underlineColor="transparent"
       mode="outlined"
+      error={error}
       {...props}
     />
-    {errorText ? <Text style={styles.error}>{errorText}</Text> : null}
+    {error && errorText ? <Text style={styles.error}>{errorText}</Text> : null}
   </View>
 );
 
