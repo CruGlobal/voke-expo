@@ -25,7 +25,7 @@ const Navigation = (): ReactElement => {
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
-          header: (props) => <Appbar {...props} />,
+          header: (props) => <Appbar isSignedIn={isSignedIn} {...props} />,
         }}
       >
         {isSignedIn ? (

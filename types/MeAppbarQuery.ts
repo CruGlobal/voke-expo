@@ -4,23 +4,18 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: MeQuery
+// GraphQL query operation: MeAppbarQuery
 // ====================================================
 
-export interface MeQuery_me {
+export interface MeAppbarQuery_me {
   __typename: "Me";
   id: string;
-  givenName: string | null;
-  familyName: string | null;
-  nickname: string | null;
-  locale: string | null;
-  email: string | null;
-  emailVerified: boolean | null;
+  picture: string | null;
 }
 
-export interface MeQuery {
+export interface MeAppbarQuery {
   /**
    * Current User
    */
-  me: MeQuery_me;
+  me: MeAppbarQuery_me;
 }

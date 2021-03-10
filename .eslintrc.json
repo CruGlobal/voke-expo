@@ -43,7 +43,7 @@
       "allow": ["StatusBar"]
     }],
     "import/no-extraneous-dependencies": ["error", {
-      "devDependencies": ["**/*.test.{ts,tsx}"]
+      "devDependencies": ["**/*.{test,stories}.{ts,tsx}","storybook/*.{ts,tsx}"]
     }]
   },
   "overrides": [
@@ -51,6 +51,12 @@
       "files": ["**/*.test.{ts,tsx}"],
       "rules": {
         "prefer-promise-reject-errors": "off"
+      }
+    },
+    { 
+      "files": ["storybook/storyLoader.ts"],
+      "rules": {
+        "global-require": "off"
       }
     }
   ]
