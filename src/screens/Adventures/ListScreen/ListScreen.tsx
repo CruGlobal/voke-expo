@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
 import { Paragraph } from "react-native-paper";
-import Background from "../../components/Background";
+import Background from "../../../components/Background";
 
-const AdventuresScreen = (): ReactElement => {
+const ListScreen = (): ReactElement => {
   return (
     <Background>
       <Paragraph>Adventures</Paragraph>
@@ -10,4 +10,4 @@ const AdventuresScreen = (): ReactElement => {
   );
 };
 
-export default AdventuresScreen;
+export default ListScreen;

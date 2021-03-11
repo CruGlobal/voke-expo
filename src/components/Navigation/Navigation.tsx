@@ -1,17 +1,13 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef } from "react";
 import {
   NavigationContainer,
   NavigationContainerRef,
 } from "@react-navigation/native";
-import HomeScreen from "../../screens/HomeScreen";
-import LoginScreen from "../../screens/LoginScreen";
-import RegisterScreen from "../../screens/RegisterScreen";
-import ForgotPasswordScreen from "../../screens/ForgotPasswordScreen";
-import DashboardScreen from "../../screens/DashboardScreen";
 import Appbar from "../Appbar";
 import { Auth } from "../../core/firebaseClient";
-import ProfileScreen from "../../screens/ProfileScreen";
+import Accounts from "../../screens/Accounts";
+import BottomNavigation from "../BottomNavigation";
 
 const Stack = createStackNavigator();
 
@@ -47,16 +43,19 @@ const Navigation = (): ReactElement => {
           header: (props) => <Appbar user={Auth.currentUser} {...props} />,
         }}
       >
-        <Stack.Screen name="Dashboard" component={DashboardScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Dashboard" component={BottomNavigation} />
+        <Stack.Screen name="Profile" component={Accounts.ProfileScreen} />
         <Stack.Screen
           name="Home"
-          component={HomeScreen}
+          component={Accounts.HomeScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+        <Stack.Screen name="Login" component={Accounts.LoginScreen} />
+        <Stack.Screen name="Register" component={Accounts.RegisterScreen} />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={Accounts.ForgotPasswordScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

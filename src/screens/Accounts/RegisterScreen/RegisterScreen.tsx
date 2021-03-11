@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
-import { Auth } from "../../core/firebaseClient";
-import Background from "../../components/Background";
-import Logo from "../../components/Logo";
-import Header from "../../components/Header";
-import Button from "../../components/Button";
-import TextInput from "../../components/TextInput";
-import theme from "../../core/theme";
+import { Auth } from "../../../core/firebaseClient";
+import Background from "../../../components/Background";
+import Logo from "../../../components/Logo";
+import Header from "../../../components/Header";
+import Button from "../../../components/Button";
+import TextInput from "../../../components/TextInput";
+import theme from "../../../core/theme";
 
 const styles = StyleSheet.create({
   label: {

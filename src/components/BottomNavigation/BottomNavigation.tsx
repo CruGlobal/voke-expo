@@ -2,12 +2,12 @@ import React, { ReactElement } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialIcons } from "@expo/vector-icons";
 import { gql, useQuery } from "@apollo/client";
-import CommunityScreen from "../../screens/CommunityScreen";
+import Chats from "../../screens/Chats";
 import StorybookScreen from "../../screens/StorybookScreen";
 import theme from "../../core/theme";
 import { MeBottomTabNavigatorQuery } from "../../../types/MeBottomTabNavigatorQuery";
-import AdventuresScreen from "../../screens/AdventuresScreen";
-import VideosScreen from "../../screens/VideosScreen";
+import Adventures from "../../screens/Adventures";
+import Videos from "../../screens/Videos";
 
 const BottomTab = createMaterialBottomTabNavigator();
 
@@ -28,7 +28,7 @@ const BottomTabNavigator = (): ReactElement => {
     <BottomTab.Navigator barStyle={{ backgroundColor: theme.colors.primary }}>
       <BottomTab.Screen
         name="Community"
-        component={CommunityScreen}
+        component={Chats.ListScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="home" color={color} size={26} />
@@ -37,7 +37,7 @@ const BottomTabNavigator = (): ReactElement => {
       />
       <BottomTab.Screen
         name="Adventures"
-        component={AdventuresScreen}
+        component={Adventures.ListScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="explore" color={color} size={26} />
@@ -46,7 +46,7 @@ const BottomTabNavigator = (): ReactElement => {
       />
       <BottomTab.Screen
         name="Videos"
-        component={VideosScreen}
+        component={Videos.ListScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="video-library" color={color} size={26} />

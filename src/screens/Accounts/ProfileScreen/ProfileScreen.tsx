@@ -7,11 +7,11 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { compact } from "lodash";
 import { useNavigation } from "@react-navigation/native";
-import Avatar from "../../components/Avatar";
-import Background from "../../components/Background";
-import TextInput from "../../components/TextInput";
-import { Auth, Storage } from "../../core/firebaseClient";
-import Button from "../../components/Button";
+import Avatar from "../../../components/Avatar";
+import Background from "../../../components/Background";
+import TextInput from "../../../components/TextInput";
+import { Auth, Storage } from "../../../core/firebaseClient";
+import Button from "../../../components/Button";
 
 const ProfileSchema = Yup.object().shape({
   displayName: Yup.string().required("Required"),

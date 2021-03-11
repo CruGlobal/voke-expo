@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
 import { Paragraph } from "react-native-paper";
-import Background from "../../components/Background";
+import Background from "../../../components/Background";
 
-const VideosScreen = (): ReactElement => {
+const ListScreen = (): ReactElement => {
   return (
     <Background>
       <Paragraph>Videos</Paragraph>
@@ -10,4 +10,4 @@ const VideosScreen = (): ReactElement => {
   );
 };
 
-export default VideosScreen;
+export default ListScreen;
