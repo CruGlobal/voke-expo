@@ -2,12 +2,12 @@ import React, { ReactElement } from "react";
 import { Paragraph } from "react-native-paper";
 import Background from "../../components/Background";
 
-const CommunityScreen = (): ReactElement => {
+const AdventuresScreen = (): ReactElement => {
   return (
     <Background>
-      <Paragraph>Community</Paragraph>
+      <Paragraph>Adventures</Paragraph>
     </Background>
   );
 };
 
-export default CommunityScreen;
+export default AdventuresScreen;

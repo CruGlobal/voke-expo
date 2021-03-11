@@ -121,7 +121,8 @@ const ProfileScreen = (): ReactElement => {
               <Avatar
                 photoURL={photoURL}
                 displayName={values.displayName}
-                size={100}
+                size={250}
+                icon="camera"
               />
             </TouchableOpacity>
             <TextInput

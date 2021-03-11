@@ -2,10 +2,20 @@ import React, { ReactElement } from "react";
 import { Appbar as PaperAppbar } from "react-native-paper";
 import { StackHeaderProps } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Image, StyleSheet } from "react-native";
 import theme from "../../core/theme";
 import apolloClient from "../../core/apolloClient";
 import firebaseClient, { Auth } from "../../core/firebaseClient";
 import Avatar from "../Avatar";
+import logo from "../../assets/logo-white.png";
+
+const styles = StyleSheet.create({
+  image: {
+    flexGrow: 1,
+    resizeMode: "contain",
+    height: 24,
+  },
+});
 
 interface AppbarProps extends StackHeaderProps {
   user: firebaseClient.User | null;
@@ -34,23 +44,25 @@ const Appbar = ({
     title = scene.route.name;
   }
   return (
-    <PaperAppbar.Header theme={{ colors: { primary: theme.colors.surface } }}>
+    <PaperAppbar.Header theme={theme} dark>
       {previous ? (
         <PaperAppbar.BackAction
           onPress={() => {
             navigation.pop();
           }}
-          color={theme.colors.primary}
+          color={theme.colors.surface}
         />
       ) : (
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
           <Avatar photoURL={user?.photoURL} displayName={user?.displayName} />
         </TouchableOpacity>
       )}
-      <PaperAppbar.Content title={previous ? title : "Voke"} />
-      {user && (
-        <PaperAppbar.Action icon="logout" onPress={handleLogoutPressed} />
+      {previous ? (
+        <PaperAppbar.Content title={title} />
+      ) : (
+        <Image source={logo} style={styles.image} />
       )}
+      {user && <PaperAppbar.Action icon="bell" onPress={handleLogoutPressed} />}
     </PaperAppbar.Header>
   );
 };

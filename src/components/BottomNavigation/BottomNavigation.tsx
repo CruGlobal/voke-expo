@@ -6,11 +6,10 @@ import CommunityScreen from "../../screens/CommunityScreen";
 import StorybookScreen from "../../screens/StorybookScreen";
 import theme from "../../core/theme";
 import { MeBottomTabNavigatorQuery } from "../../../types/MeBottomTabNavigatorQuery";
+import AdventuresScreen from "../../screens/AdventuresScreen";
+import VideosScreen from "../../screens/VideosScreen";
 
 const BottomTab = createMaterialBottomTabNavigator();
-
-const AdventuresScreen = () => <></>;
-const VideosScreen = () => <></>;
 
 const ME_BOTTOM_TAB_NAVIGATOR_QUERY = gql`
   query MeBottomTabNavigatorQuery {
