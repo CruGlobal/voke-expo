@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
-import firebaseClient from "../../core/firebaseClient";
+import { Auth } from "../../core/firebaseClient";
 import Background from "../../components/Background";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
@@ -50,9 +50,7 @@ const RegisterScreen = (): ReactElement => {
         validationSchema={RegisterSchema}
         onSubmit={async ({ email, password }, { setErrors }) => {
           try {
-            await firebaseClient
-              .auth()
-              .createUserWithEmailAndPassword(email, password);
+            await Auth.createUserWithEmailAndPassword(email, password);
           } catch (ex) {
             switch (ex.code) {
               case "auth/email-already-in-use":

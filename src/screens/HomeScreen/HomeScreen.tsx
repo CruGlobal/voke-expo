@@ -6,13 +6,13 @@ import Header from "../../components/Header";
 import Button from "../../components/Button";
 import Paragraph from "../../components/Paragraph";
 import welcomeScreen from "../../assets/welcomeScreen.png";
-import firebaseClient from "../../core/firebaseClient";
+import { Auth } from "../../core/firebaseClient";
 
 const HomeScreen = (): ReactElement => {
   const navigation = useNavigation();
 
   const handleAnonymousPressed = (): void => {
-    firebaseClient.auth().signInAnonymously();
+    Auth.signInAnonymously();
   };
 
   return (

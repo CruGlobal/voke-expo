@@ -36,7 +36,8 @@
       "FIREBASE_API_KEY": "AIzaSyCGojK3V-Rukfp0kR44JJj27pd-f5H6Ko0",
       "FIREBASE_APP_ID": "1:360680446899:web:5fcf32ce870ef1dd7e49c6",
       "FIREBASE_AUTH_DOMAIN": "voke-6ee71.firebaseapp.com",
-      "FIREBASE_PROJECT_ID": "voke-6ee71"
+      "FIREBASE_PROJECT_ID": "voke-6ee71",
+      "FIREBASE_STORAGE_BUCKET": "voke-6ee71.appspot.com"
     },
     "version": "0.0.1"
   }

@@ -17,9 +17,9 @@ jest.mock("@react-navigation/native", () => {
 let promise = Promise.resolve();
 const sendPasswordResetEmail = jest.fn(() => promise);
 jest.mock("../../core/firebaseClient", () => ({
-  auth: () => ({
+  Auth: {
     sendPasswordResetEmail,
-  }),
+  },
 }));
 
 describe("ForgotPasswordScreen", () => {

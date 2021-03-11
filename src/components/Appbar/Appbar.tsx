@@ -1,41 +1,28 @@
-import React, { ReactElement, useEffect } from "react";
-import { Appbar as PaperAppbar, Avatar } from "react-native-paper";
+import React, { ReactElement } from "react";
+import { Appbar as PaperAppbar } from "react-native-paper";
 import { StackHeaderProps } from "@react-navigation/stack";
-import { gql, useLazyQuery } from "@apollo/client";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import theme from "../../core/theme";
 import apolloClient from "../../core/apolloClient";
-import firebaseClient from "../../core/firebaseClient";
-import { MeAppbarQuery } from "../../../types/MeAppbarQuery";
-
-const ME_APPBAR_QUERY = gql`
-  query MeAppbarQuery {
-    me {
-      id
-      picture
-    }
-  }
-`;
+import firebaseClient, { Auth } from "../../core/firebaseClient";
+import Avatar from "../Avatar";
 
 interface AppbarProps extends StackHeaderProps {
-  isSignedIn?: boolean;
+  user: firebaseClient.User | null;
 }
 
 const Appbar = ({
   scene,
   previous,
   navigation,
-  isSignedIn,
+  user,
 }: AppbarProps): ReactElement => {
-  const [loadMe, { data }] = useLazyQuery<MeAppbarQuery>(ME_APPBAR_QUERY);
   const { options } = scene.descriptor;
 
   const handleLogoutPressed = async (): Promise<void> => {
     await apolloClient.resetStore();
-    await firebaseClient.auth().signOut();
+    await Auth.signOut();
   };
-  useEffect(() => {
-    if (isSignedIn) loadMe();
-  }, [isSignedIn, loadMe]);
 
   let title;
 
@@ -48,25 +35,20 @@ const Appbar = ({
   }
   return (
     <PaperAppbar.Header theme={{ colors: { primary: theme.colors.surface } }}>
-      {previous && (
+      {previous ? (
         <PaperAppbar.BackAction
           onPress={() => {
             navigation.pop();
           }}
           color={theme.colors.primary}
         />
-      )}
-
-      {data?.me.picture && (
-        <Avatar.Image
-          size={40}
-          source={{
-            uri: data?.me.picture,
-          }}
-        />
+      ) : (
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Avatar photoURL={user?.photoURL} displayName={user?.displayName} />
+        </TouchableOpacity>
       )}
       <PaperAppbar.Content title={previous ? title : "Voke"} />
-      {isSignedIn && (
+      {user && (
         <PaperAppbar.Action icon="logout" onPress={handleLogoutPressed} />
       )}
     </PaperAppbar.Header>

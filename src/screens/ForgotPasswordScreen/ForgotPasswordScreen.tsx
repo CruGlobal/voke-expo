@@ -9,7 +9,7 @@ import Header from "../../components/Header";
 import TextInput from "../../components/TextInput";
 import theme from "../../core/theme";
 import Button from "../../components/Button";
-import firebaseClient from "../../core/firebaseClient";
+import { Auth } from "../../core/firebaseClient";
 
 const styles = StyleSheet.create({
   back: {
@@ -44,7 +44,7 @@ const ForgotPasswordScreen = (): ReactElement => {
         validationSchema={ForgotPasswordSchema}
         onSubmit={async ({ email }, { setErrors }) => {
           try {
-            await firebaseClient.auth().sendPasswordResetEmail(email);
+            await Auth.sendPasswordResetEmail(email);
             navigation.navigate("Login");
           } catch (ex) {
             switch (ex.code) {
