@@ -4,8 +4,7 @@ import { StackHeaderProps } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Image, StyleSheet } from "react-native";
 import theme from "../../core/theme";
-import apolloClient from "../../core/apolloClient";
-import firebaseClient, { Auth } from "../../core/firebaseClient";
+import { Auth } from "../../core/firebaseClient";
 import Avatar from "../Avatar";
 import logo from "../../assets/logo-white.png";
 
@@ -17,22 +16,12 @@ const styles = StyleSheet.create({
   },
 });
 
-interface AppbarProps extends StackHeaderProps {
-  user: firebaseClient.User | null;
-}
-
 const Appbar = ({
   scene,
   previous,
   navigation,
-  user,
-}: AppbarProps): ReactElement => {
+}: StackHeaderProps): ReactElement => {
   const { options } = scene.descriptor;
-
-  const handleLogoutPressed = async (): Promise<void> => {
-    await apolloClient.resetStore();
-    await Auth.signOut();
-  };
 
   let title;
 
@@ -44,17 +33,28 @@ const Appbar = ({
     title = scene.route.name;
   }
   return (
-    <PaperAppbar.Header theme={theme} dark>
+    <PaperAppbar.Header
+      style={{
+        backgroundColor: previous ? theme.colors.surface : theme.colors.primary,
+      }}
+      dark={!previous}
+    >
       {previous ? (
         <PaperAppbar.BackAction
           onPress={() => {
             navigation.pop();
           }}
-          color={theme.colors.surface}
         />
       ) : (
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-          <Avatar photoURL={user?.photoURL} displayName={user?.displayName} />
+        <TouchableOpacity
+          onPress={() =>
+            ((navigation as unknown) as { openDrawer: () => void }).openDrawer()
+          }
+        >
+          <Avatar
+            photoURL={Auth.currentUser?.photoURL}
+            displayName={Auth.currentUser?.displayName}
+          />
         </TouchableOpacity>
       )}
       {previous ? (
@@ -62,7 +62,12 @@ const Appbar = ({
       ) : (
         <Image source={logo} style={styles.image} />
       )}
-      {user && <PaperAppbar.Action icon="bell" onPress={handleLogoutPressed} />}
+      {Auth.currentUser && (
+        <PaperAppbar.Action
+          icon="bell"
+          onPress={() => navigation.navigate("Notifications")}
+        />
+      )}
     </PaperAppbar.Header>
   );
 };

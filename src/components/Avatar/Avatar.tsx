@@ -20,6 +20,7 @@ interface AvatarProps {
   displayName: string | null | undefined;
   size?: number;
   icon?: IconSource;
+  margin?: number;
 }
 
 const Avatar = ({
@@ -27,6 +28,7 @@ const Avatar = ({
   displayName,
   size = 48,
   icon = "account",
+  margin = 6,
 }: AvatarProps): ReactElement => {
   return (
     <>
@@ -40,17 +42,17 @@ const Avatar = ({
         <>
           {displayName ? (
             <PaperAvatar.Text
-              size={size - 12}
+              size={size - margin * 2}
               label={displayName.match(/\b(\w)/g)?.join("") || ""}
               color={theme.colors.surface}
-              style={styles.avatar}
+              style={[styles.avatar, { margin }]}
             />
           ) : (
             <PaperAvatar.Icon
-              size={size - 12}
+              size={size - margin * 2}
               icon={icon}
               color={theme.colors.surface}
-              style={styles.avatar}
+              style={[styles.avatar, { margin }]}
             />
           )}
         </>

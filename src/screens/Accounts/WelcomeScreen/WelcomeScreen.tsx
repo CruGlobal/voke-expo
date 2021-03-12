@@ -8,7 +8,7 @@ import Paragraph from "../../../components/Paragraph";
 import welcomeScreen from "../../../assets/welcomeScreen.png";
 import { Auth } from "../../../core/firebaseClient";
 
-const HomeScreen = (): ReactElement => {
+const WelcomeScreen = (): ReactElement => {
   const navigation = useNavigation();
 
   const handleAnonymousPressed = (): void => {
@@ -39,4 +39,4 @@ const HomeScreen = (): ReactElement => {
   );
 };
 
-export default HomeScreen;
+export default WelcomeScreen;

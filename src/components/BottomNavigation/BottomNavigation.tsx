@@ -25,13 +25,13 @@ const BottomTabNavigator = (): ReactElement => {
     ME_BOTTOM_TAB_NAVIGATOR_QUERY,
   );
   return (
-    <BottomTab.Navigator barStyle={{ backgroundColor: theme.colors.primary }}>
+    <BottomTab.Navigator barStyle={{ backgroundColor: theme.colors.surface }}>
       <BottomTab.Screen
-        name="Community"
+        name="Chats"
         component={Chats.ListScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="home" color={color} size={26} />
+            <MaterialIcons name="chat" color={color} size={26} />
           ),
         }}
       />
