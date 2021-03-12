@@ -5,6 +5,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import Appbar from "../Appbar";
 import { Auth } from "../../core/firebaseClient";
 import Accounts from "../../screens/Accounts";
+import Notifications from "../../screens/Notifications";
 import BottomNavigation from "../BottomNavigation";
 import DrawerContent from "../DrawerContent";
 
@@ -43,6 +44,7 @@ const StackNavigator = (): ReactElement => {
     >
       <Stack.Screen name="Dashboard" component={BottomNavigation} />
       <Stack.Screen name="Profile" component={Accounts.ProfileScreen} />
+      <Stack.Screen name="Notifications" component={Notifications.ListScreen} />
       <Stack.Screen
         name="Welcome"
         component={Accounts.WelcomeScreen}
