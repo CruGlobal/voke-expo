@@ -50,11 +50,12 @@
     { 
       "files": ["**/*.test.{ts,tsx}"],
       "rules": {
-        "prefer-promise-reject-errors": "off"
+        "prefer-promise-reject-errors": "off",
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
       }
     },
     { 
-      "files": ["storybook/storyLoader.ts"],
+      "files": ["storybook/storyLoader.js"],
       "rules": {
         "global-require": "off"
       }

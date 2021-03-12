@@ -14,11 +14,12 @@ jest.mock("@react-navigation/native", () => {
   };
 });
 
-let promise = Promise.resolve();
-const sendPasswordResetEmail = jest.fn(() => promise);
-jest.mock("../../core/firebaseClient", () => ({
+let promise: Promise<void>;
+const sendPasswordResetEmail = jest.fn((_email: string) => promise);
+jest.mock("../../../core/firebaseClient", () => ({
+  __esModule: true,
   Auth: {
-    sendPasswordResetEmail,
+    sendPasswordResetEmail: (email: string) => sendPasswordResetEmail(email),
   },
 }));
 

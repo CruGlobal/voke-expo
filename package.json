@@ -107,7 +107,7 @@
         "./src"
       ],
       "pattern": "**/*.stories.tsx",
-      "outputFile": "./storybook/storyLoader.ts"
+      "outputFile": "./storybook/storyLoader.js"
     }
   }
 }

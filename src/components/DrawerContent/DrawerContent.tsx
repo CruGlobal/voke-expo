@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   title: {
-    marginTop: 20,
+    marginTop: 10,
     fontWeight: "bold",
   },
   section: {
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
 const DrawerContent = ({
   progress,
   navigation,
-  user,
   ...props
 }: DrawerContentComponentProps): ReactElement => {
   const paperTheme = useTheme();
@@ -84,25 +83,7 @@ const DrawerContent = ({
             label="Profile"
             onPress={() => navigation.navigate("Profile")}
           />
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons name="tune" color={color} size={size} />
-            )}
-            label="Preferences"
-            onPress={() => console.log("preferences")}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name="bookmark-outline"
-                color={color}
-                size={size}
-              />
-            )}
-            label="Bookmarks"
-            onPress={() => console.log("bookmarks")}
-          />
-          {user && (
+          {Auth.currentUser && (
             <DrawerItem
               icon={({ color, size }) => (
                 <MaterialCommunityIcons
