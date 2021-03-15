@@ -13,7 +13,7 @@ import theme from "../../../core/theme";
 
 const styles = StyleSheet.create({
   label: {
-    color: theme.colors.secondary,
+    color: theme.colors.text,
   },
   button: {
     marginTop: 24,

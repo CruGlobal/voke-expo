@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   label: {
-    color: theme.colors.secondary,
+    color: theme.colors.text,
   },
   link: {
     fontWeight: "bold",
@@ -42,7 +42,7 @@ const LoginScreen = (): ReactElement => {
     <Background>
       <Logo />
 
-      <Header>Welcome back.</Header>
+      <Header>Welcome back</Header>
 
       <Formik
         initialValues={{
@@ -120,7 +120,7 @@ const LoginScreen = (): ReactElement => {
               <TouchableOpacity
                 onPress={() => navigation.navigate("ForgotPassword")}
               >
-                <Text style={styles.label}>Forgot your password?</Text>
+                <Text style={styles.link}>Forgot your password?</Text>
               </TouchableOpacity>
             </View>
 

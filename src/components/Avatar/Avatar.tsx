@@ -43,7 +43,12 @@ const Avatar = ({
           {displayName ? (
             <PaperAvatar.Text
               size={size - margin * 2}
-              label={displayName.match(/\b(\w)/g)?.join("") || ""}
+              label={
+                displayName
+                  .match(/\b(\w)/g)
+                  ?.join("")
+                  .toUpperCase() || ""
+              }
               color={theme.colors.surface}
               style={[styles.avatar, { margin }]}
             />

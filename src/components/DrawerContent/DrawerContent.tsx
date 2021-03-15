@@ -41,6 +41,7 @@ const DrawerContent = ({
   });
 
   const handleLogoutPressed = async (): Promise<void> => {
+    navigation.toggleDrawer();
     await apolloClient.resetStore();
     await Auth.signOut();
   };
@@ -59,7 +60,7 @@ const DrawerContent = ({
         <View style={styles.userInfoSection}>
           <TouchableOpacity
             onPress={() => {
-              navigation.toggleDrawer();
+              navigation.navigate("Profile");
             }}
           >
             <Avatar
@@ -83,19 +84,20 @@ const DrawerContent = ({
             label="Profile"
             onPress={() => navigation.navigate("Profile")}
           />
-          {Auth.currentUser && (
-            <DrawerItem
-              icon={({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="logout"
-                  color={color}
-                  size={size}
-                />
-              )}
-              label="Logout"
-              onPress={handleLogoutPressed}
-            />
-          )}
+          <DrawerItem
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons name="bell" color={color} size={size} />
+            )}
+            label="Notifications"
+            onPress={() => navigation.navigate("Notifications")}
+          />
+          <DrawerItem
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons name="logout" color={color} size={size} />
+            )}
+            label="Logout"
+            onPress={handleLogoutPressed}
+          />
         </Drawer.Section>
       </Animated.View>
     </DrawerContentScrollView>

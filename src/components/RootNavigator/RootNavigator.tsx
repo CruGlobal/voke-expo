@@ -38,6 +38,7 @@ const StackNavigator = (): ReactElement => {
   return (
     <Stack.Navigator
       initialRouteName="Welcome"
+      headerMode="screen"
       screenOptions={{
         header: (props) => <Appbar {...props} />,
       }}
@@ -51,10 +52,15 @@ const StackNavigator = (): ReactElement => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Login" component={Accounts.LoginScreen} />
-      <Stack.Screen name="Register" component={Accounts.RegisterScreen} />
+      <Stack.Screen
+        name="Register"
+        component={Accounts.RegisterScreen}
+        options={{ title: "Sign Up" }}
+      />
       <Stack.Screen
         name="ForgotPassword"
         component={Accounts.ForgotPasswordScreen}
+        options={{ title: "Forgot My Password" }}
       />
     </Stack.Navigator>
   );
