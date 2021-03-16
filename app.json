@@ -5,6 +5,7 @@
     "slug": "voke-expo",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "backgroundColor": "#000000",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

@@ -2,17 +2,21 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React, { ReactElement, useEffect } from "react";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Dimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Appbar from "../Appbar";
 import { Auth } from "../../core/firebaseClient";
 import Accounts from "../../screens/Accounts";
 import Notifications from "../../screens/Notifications";
 import BottomNavigation from "../BottomNavigation";
 import DrawerContent from "../DrawerContent";
+import Videos from "../../screens/Videos";
 
 const Stack = createStackNavigator();
 
 const StackNavigator = (): ReactElement => {
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     return Auth.onAuthStateChanged((user) => {
@@ -61,6 +65,31 @@ const StackNavigator = (): ReactElement => {
         name="ForgotPassword"
         component={Accounts.ForgotPasswordScreen}
         options={{ title: "Forgot My Password" }}
+      />
+      <Stack.Screen
+        name="Videos.Detail"
+        component={Videos.DetailScreen}
+        options={{
+          headerShown: false,
+          gestureDirection: "vertical",
+          gestureResponseDistance: {
+            vertical: Dimensions.get("window").width / (16 / 9) + insets.top,
+          },
+          cardStyleInterpolator: ({ current, layouts }) => {
+            return {
+              cardStyle: {
+                transform: [
+                  {
+                    translateY: current.progress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [layouts.screen.height, 0],
+                    }),
+                  },
+                ],
+              },
+            };
+          },
+        }}
       />
     </Stack.Navigator>
   );
