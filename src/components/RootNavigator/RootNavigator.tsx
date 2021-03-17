@@ -75,6 +75,8 @@ const StackNavigator = (): ReactElement => {
           gestureResponseDistance: {
             vertical: Dimensions.get("window").width / (16 / 9) + insets.top,
           },
+          cardStyle: { backgroundColor: "transparent" },
+          cardOverlayEnabled: true,
           cardStyleInterpolator: ({ current, layouts }) => {
             return {
               cardStyle: {
@@ -86,6 +88,13 @@ const StackNavigator = (): ReactElement => {
                     }),
                   },
                 ],
+              },
+              overlayStyle: {
+                opacity: current.progress.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 1],
+                  extrapolate: "clamp",
+                }),
               },
             };
           },

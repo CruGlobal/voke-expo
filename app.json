@@ -20,7 +20,8 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "0.0.1",
-      "bundleIdentifier": "org.cru.voke-expo"
+      "bundleIdentifier": "org.cru.voke-expo",
+      "requireFullScreen": true
     },
     "android": {
       "adaptiveIcon": {

@@ -3,7 +3,6 @@ import {
   Animated,
   Dimensions,
   GestureResponderEvent,
-  ImageURISource,
   LayoutChangeEvent,
   Text,
   TouchableOpacity,
@@ -581,6 +580,7 @@ const VideoPlayer = ({
           style={{
             width: videoWidth,
             height: videoHeight,
+            backgroundColor: "#000",
           }}
         />
 
