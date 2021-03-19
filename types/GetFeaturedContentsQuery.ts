@@ -13,10 +13,11 @@ export interface GetFeaturedContentsQuery_contents_nodes {
   __typename: "Arclight";
   id: string;
   name: string;
-  slug: string;
   description: string | null;
-  hlsUrl: string;
+  slug: string;
+  viewsCount: number;
   pictureLargeUrl: string;
+  hlsUrl: string;
 }
 
 export interface GetFeaturedContentsQuery_contents {

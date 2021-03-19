@@ -9,11 +9,7 @@ import {
   TouchableOpacityProps,
   TouchableWithoutFeedback,
   View,
-  ViewProps,
-  ViewStyle,
-  ActivityIndicator,
   StyleSheet,
-  StyleProp,
 } from "react-native";
 import { useNetInfo } from "@react-native-community/netinfo";
 import React, {
@@ -25,74 +21,70 @@ import React, {
 } from "react";
 import Slider from "@react-native-community/slider";
 import { MaterialIcons } from "@expo/vector-icons";
+import { ActivityIndicator } from "react-native-paper";
 import theme from "../../core/theme";
 
-const ICON_COLOR = "#FFF";
-const CENTER_ICON_SIZE = 75;
-const BOTTOM_BAR_ICON_SIZE = 30;
-
 const styles = StyleSheet.create({
-  materialIcons: {
-    textAlign: "center",
-  },
   text: {
     color: "#FFF",
     fontSize: 12,
     fontWeight: "bold",
   },
+  name: {
+    color: "#FFF",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
   textSemiTransparent: {
     opacity: 0.5,
   },
+  overlay: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 20,
+  },
+  overlayInFullscreen: {
+    paddingHorizontal: 40,
+  },
+  topBar: {
+    alignSelf: "stretch",
+  },
+  topBarInFullscreen: {
+    paddingTop: 10,
+    paddingBottom: 20,
+  },
+  primaryControl: {
+    flexGrow: 1,
+    justifyContent: "center",
+  },
+  bottomBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignSelf: "stretch",
+  },
+  bottomBarInFullscreen: {
+    paddingBottom: 30,
+  },
+  slider: {
+    position: "absolute",
+    left: -4,
+    right: -4,
+    bottom: -18,
+  },
+  sliderInFullscreen: {
+    bottom: 20,
+    left: 40,
+    right: 40,
+  },
 });
-
-const PlayIcon = (): ReactElement => (
-  <MaterialIcons
-    name="play-arrow"
-    size={CENTER_ICON_SIZE}
-    color={ICON_COLOR}
-    style={styles.materialIcons}
-  />
-);
-
-const PauseIcon = (): ReactElement => (
-  <MaterialIcons
-    name="pause"
-    size={CENTER_ICON_SIZE}
-    color={ICON_COLOR}
-    style={styles.materialIcons}
-  />
-);
-
-const Spinner = (): ReactElement => (
-  <ActivityIndicator color={ICON_COLOR} size="large" />
-);
-
-const FullscreenEnterIcon = (): ReactElement => (
-  <MaterialIcons
-    name="fullscreen"
-    size={BOTTOM_BAR_ICON_SIZE}
-    color={ICON_COLOR}
-    style={styles.materialIcons}
-  />
-);
-
-const FullscreenExitIcon = (): ReactElement => (
-  <MaterialIcons
-    name="fullscreen-exit"
-    size={BOTTOM_BAR_ICON_SIZE}
-    color={ICON_COLOR}
-    style={styles.materialIcons}
-  />
-);
-
-const ReplayIcon = (): ReactElement => (
-  <MaterialIcons
-    name="replay"
-    size={CENTER_ICON_SIZE}
-    color={ICON_COLOR}
-    style={styles.materialIcons}
-  />
-);
 
 const BUFFERING_SHOW_DELAY = 200;
 
@@ -146,6 +138,8 @@ type Props = {
   errorCallback?: (error: Error) => void;
   switchToLandscape?: () => void;
   switchToPortrait?: () => void;
+  onClose?: () => void;
+  name?: string;
 };
 
 const VideoPlayer = ({
@@ -161,7 +155,9 @@ const VideoPlayer = ({
   playbackCallback,
   switchToLandscape,
   switchToPortrait,
+  onClose,
   showControlsOnLoad = false,
+  name,
 }: Props): ReactElement => {
   const playbackInstance = useRef<Video>(null);
   let showingAnimation: Animated.CompositeAnimation | null = null;
@@ -480,7 +476,6 @@ const VideoPlayer = ({
     }
   };
 
-  const centeredContentWidth = 100;
   const screenRatio = width / height;
 
   let videoHeight = height;
@@ -492,15 +487,12 @@ const VideoPlayer = ({
   }
 
   const Control = ({
-    callback,
-    center,
+    onPress,
     children,
     ...otherProps
   }: {
-    callback: () => void;
-    center: boolean;
+    onPress: () => void;
     children: ReactNode;
-    transparent?: boolean;
     otherProps?: TouchableOpacityProps;
   }) => (
     <TouchableOpacity
@@ -508,66 +500,11 @@ const VideoPlayer = ({
       hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
       onPress={() => {
         resetControlsTimer();
-        callback();
+        onPress();
       }}
     >
-      <View
-        style={
-          center && {
-            justifyContent: "center",
-            width: centeredContentWidth,
-            height: centeredContentWidth,
-            borderRadius: centeredContentWidth,
-          }
-        }
-      >
-        {children}
-      </View>
+      <View>{children}</View>
     </TouchableOpacity>
-  );
-
-  const CenteredView = ({
-    children,
-    style: viewStyle,
-    ...otherProps
-  }: {
-    children?: ReactNode;
-    style?: Animated.WithAnimatedValue<StyleProp<ViewStyle>>;
-    otherProps?: ViewProps;
-  }) => (
-    <Animated.View
-      {...otherProps}
-      style={[
-        {
-          backgroundColor: "rgba(0,0,0,0.5)",
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        },
-        viewStyle,
-      ]}
-    >
-      {children}
-    </Animated.View>
-  );
-
-  const ErrorText = ({ text }: { text: string }) => (
-    <View
-      style={{
-        position: "absolute",
-        top: videoHeight / 2,
-        width: videoWidth - 40,
-        marginRight: 20,
-        marginLeft: 20,
-      }}
-    >
-      <Text style={[styles.text, { textAlign: "center" }]}>{text}</Text>
-    </View>
   );
 
   return (
@@ -583,117 +520,120 @@ const VideoPlayer = ({
             backgroundColor: "#000",
           }}
         />
-
-        {/* Spinner */}
-        {/* Due to loading Animation, it cannot use CenteredView */}
-        {((playbackState === PlaybackStates.Buffering &&
-          Date.now() - lastPlaybackStateUpdate > BUFFERING_SHOW_DELAY) ||
-          playbackState === PlaybackStates.Loading) && (
-          <View
-            style={{
-              position: "absolute",
-              left: (videoWidth - centeredContentWidth) / 2,
-              top: (videoHeight - centeredContentWidth) / 2,
-              width: centeredContentWidth,
-              height: centeredContentWidth,
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Spinner />
-          </View>
-        )}
-
-        {/* Play/pause buttons */}
-        {seekState !== SeekStates.Seeking &&
-          (playbackState === PlaybackStates.Playing ||
-            playbackState === PlaybackStates.Paused) && (
-            <CenteredView style={{ opacity: controlsOpacity }}>
-              <Control center callback={togglePlay}>
-                {/* Due to rerendering, we have to split them */}
-                {playbackState === PlaybackStates.Playing && <PauseIcon />}
-                {playbackState === PlaybackStates.Paused && <PlayIcon />}
-              </Control>
-            </CenteredView>
-          )}
-
-        {/* Replay button to show at the end of a video */}
-        {playbackState === PlaybackStates.Ended && (
-          <CenteredView>
-            <Control center callback={replay}>
-              <ReplayIcon />
-            </Control>
-          </CenteredView>
-        )}
-
-        {/* Error display */}
-        {playbackState === PlaybackStates.Error && <ErrorText text={error} />}
-
-        {/* Bottom bar */}
         <Animated.View
+          style={[
+            styles.overlay,
+            { opacity: controlsOpacity },
+            inFullscreen && styles.overlayInFullscreen,
+          ]}
           pointerEvents={
             controlsState === ControlStates.Hidden ? "none" : "auto"
           }
-          style={[
-            {
-              position: "absolute",
-              bottom: 0,
-              width: videoWidth,
-              opacity: controlsOpacity,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingBottom: 20,
-              paddingHorizontal: 20,
-            },
-            inFullscreen && {
-              paddingBottom: 70,
-              paddingHorizontal: 60,
-            },
-          ]}
         >
-          {/* Current time / duration display */}
-          <View style={{ flexDirection: "row" }}>
-            <Text style={[styles.text, { marginLeft: 5 }]}>
-              {getMMSSFromMillis(playbackInstancePosition)}
-            </Text>
-            <Text style={[styles.text, styles.textSemiTransparent]}>
-              {" / "}
-              {getMMSSFromMillis(playbackInstanceDuration)}
-            </Text>
-          </View>
-
-          {/* Fullscreen control */}
-          <Control
-            center={false}
-            callback={() => {
-              if (inFullscreen) {
-                switchToPortrait?.();
-              } else {
-                switchToLandscape?.();
-              }
-            }}
+          <View
+            style={[styles.topBar, inFullscreen && styles.topBarInFullscreen]}
           >
-            {inFullscreen ? <FullscreenExitIcon /> : <FullscreenEnterIcon />}
-          </Control>
+            {inFullscreen ? (
+              <Text style={styles.name}>{name}</Text>
+            ) : (
+              <Control onPress={() => onClose?.()}>
+                <MaterialIcons
+                  name="keyboard-arrow-down"
+                  size={30}
+                  color="#fff"
+                />
+              </Control>
+            )}
+          </View>
+          <View style={styles.primaryControl}>
+            {/* Spinner */}
+            {((playbackState === PlaybackStates.Buffering &&
+              Date.now() - lastPlaybackStateUpdate > BUFFERING_SHOW_DELAY) ||
+              playbackState === PlaybackStates.Loading) && (
+              <ActivityIndicator color={theme.colors.primary} size="large" />
+            )}
+
+            {/* Play/pause buttons */}
+            {seekState !== SeekStates.Seeking &&
+              (playbackState === PlaybackStates.Playing ||
+                playbackState === PlaybackStates.Paused) && (
+                <Control onPress={togglePlay}>
+                  {/* Due to rerendering, we have to split them */}
+                  {playbackState === PlaybackStates.Playing && (
+                    <MaterialIcons name="pause" size={75} color="#fff" />
+                  )}
+                  {playbackState === PlaybackStates.Paused && (
+                    <MaterialIcons name="play-arrow" size={75} color="#fff" />
+                  )}
+                </Control>
+              )}
+            {seekState === SeekStates.Seeking &&
+              (playbackState === PlaybackStates.Playing ||
+                playbackState === PlaybackStates.Paused) && (
+                <Control onPress={replay}>
+                  <MaterialIcons name="fast-forward" size={75} color="#fff" />
+                </Control>
+              )}
+
+            {/* Replay button to show at the end of a video */}
+            {playbackState === PlaybackStates.Ended && (
+              <Control onPress={replay}>
+                <MaterialIcons name="replay" size={75} color="#fff" />
+              </Control>
+            )}
+
+            {/* Error display */}
+            {playbackState === PlaybackStates.Error && (
+              <View
+                style={{
+                  marginHorizontal: 20,
+                }}
+              >
+                <Text style={[styles.text, { textAlign: "center" }]}>
+                  {error}
+                </Text>
+              </View>
+            )}
+          </View>
+          {/* Bottom bar */}
+
+          <View
+            style={[
+              styles.bottomBar,
+              inFullscreen && styles.bottomBarInFullscreen,
+            ]}
+          >
+            {/* Current time / duration display */}
+            <View style={{ flexDirection: "row" }}>
+              <Text style={[styles.text, { marginLeft: 5 }]}>
+                {getMMSSFromMillis(playbackInstancePosition)}
+              </Text>
+              <Text style={[styles.text, styles.textSemiTransparent]}>
+                {" / "}
+                {getMMSSFromMillis(playbackInstanceDuration)}
+              </Text>
+            </View>
+            {/* Fullscreen control */}
+            <Control
+              onPress={() =>
+                inFullscreen ? switchToPortrait?.() : switchToLandscape?.()
+              }
+            >
+              {/* Due to rerendering, we have to split them */}
+              {inFullscreen && (
+                <MaterialIcons name="fullscreen-exit" size={30} color="#fff" />
+              )}
+              {!inFullscreen && (
+                <MaterialIcons name="fullscreen" size={30} color="#fff" />
+              )}
+            </Control>
+          </View>
         </Animated.View>
-        {/* Seek bar */}
         <Animated.View
           style={[
-            {
-              position: "absolute",
-              left: -15,
-              bottom: -20,
-              width: videoWidth + 30,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            },
+            styles.slider,
+            inFullscreen && styles.sliderInFullscreen,
             inFullscreen && {
-              bottom: 30,
-              left: 50,
-              width: videoWidth - 100,
               opacity: controlsOpacity,
             },
           ]}
@@ -703,7 +643,6 @@ const VideoPlayer = ({
             onPress={onSeekBarTap}
           >
             <Slider
-              style={{ marginRight: 10, marginLeft: 10, flex: 1 }}
               thumbTintColor={
                 controlsState === ControlStates.Hidden
                   ? "transparent"
@@ -714,6 +653,7 @@ const VideoPlayer = ({
               onValueChange={onSeekSliderValueChange}
               onSlidingComplete={onSeekSliderSlidingComplete}
               disabled={
+                controlsState === ControlStates.Hidden ||
                 playbackState === PlaybackStates.Loading ||
                 playbackState === PlaybackStates.Error
               }

@@ -14,9 +14,9 @@ export interface GetContentsQuery_contents_edges_node {
   id: string;
   name: string;
   slug: string;
-  description: string | null;
-  hlsUrl: string;
+  viewsCount: number;
   pictureLargeUrl: string;
+  hlsUrl: string;
 }
 
 export interface GetContentsQuery_contents_edges {
