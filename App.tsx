@@ -7,6 +7,7 @@ import RootNavigator from "./src/components/RootNavigator";
 import apolloClient from "./src/core/apolloClient";
 import theme from "./src/core/theme";
 import i18n from "./src/core/i18n";
+import "core-js/features/promise";
 
 export default function App(): ReactElement {
   return (

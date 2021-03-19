@@ -53,6 +53,10 @@ const styles = StyleSheet.create({
   overlayInFullscreen: {
     paddingHorizontal: 40,
   },
+  defaultOverlay: {
+    backgroundColor: "transparent",
+    justifyContent: "center",
+  },
   topBar: {
     alignSelf: "stretch",
   },
@@ -520,6 +524,33 @@ const VideoPlayer = ({
             backgroundColor: "#000",
           }}
         />
+        <View
+          style={[
+            styles.overlay,
+            inFullscreen && styles.overlayInFullscreen,
+            styles.defaultOverlay,
+          ]}
+        >
+          {/* Spinner */}
+          {((playbackState === PlaybackStates.Buffering &&
+            Date.now() - lastPlaybackStateUpdate > BUFFERING_SHOW_DELAY) ||
+            playbackState === PlaybackStates.Loading) && (
+            <ActivityIndicator color={theme.colors.primary} size="large" />
+          )}
+
+          {/* Error display */}
+          {playbackState === PlaybackStates.Error && (
+            <View
+              style={{
+                marginHorizontal: 20,
+              }}
+            >
+              <Text style={[styles.text, { textAlign: "center" }]}>
+                {error}
+              </Text>
+            </View>
+          )}
+        </View>
         <Animated.View
           style={[
             styles.overlay,
@@ -546,13 +577,6 @@ const VideoPlayer = ({
             )}
           </View>
           <View style={styles.primaryControl}>
-            {/* Spinner */}
-            {((playbackState === PlaybackStates.Buffering &&
-              Date.now() - lastPlaybackStateUpdate > BUFFERING_SHOW_DELAY) ||
-              playbackState === PlaybackStates.Loading) && (
-              <ActivityIndicator color={theme.colors.primary} size="large" />
-            )}
-
             {/* Play/pause buttons */}
             {seekState !== SeekStates.Seeking &&
               (playbackState === PlaybackStates.Playing ||
@@ -580,19 +604,6 @@ const VideoPlayer = ({
               <Control onPress={replay}>
                 <MaterialIcons name="replay" size={75} color="#fff" />
               </Control>
-            )}
-
-            {/* Error display */}
-            {playbackState === PlaybackStates.Error && (
-              <View
-                style={{
-                  marginHorizontal: 20,
-                }}
-              >
-                <Text style={[styles.text, { textAlign: "center" }]}>
-                  {error}
-                </Text>
-              </View>
             )}
           </View>
           {/* Bottom bar */}

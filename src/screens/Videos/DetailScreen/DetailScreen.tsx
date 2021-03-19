@@ -206,11 +206,8 @@ const ListScreen = (): ReactElement => {
       setOrientation(initialOrientation);
     });
 
-    const subscription = ScreenOrientation.addOrientationChangeListener(
-      (evt) => {
-        setOrientation(evt.orientationInfo.orientation);
-        console.log(evt.orientationInfo.orientation);
-      },
+    const subscription = ScreenOrientation.addOrientationChangeListener((evt) =>
+      setOrientation(evt.orientationInfo.orientation),
     );
 
     contentViewCreate();
@@ -270,6 +267,7 @@ const ListScreen = (): ReactElement => {
               videoProps={{
                 source: {
                   uri: params.hlsUrl,
+                  overrideFileExtensionAndroid: "m3u8",
                 },
                 shouldPlay: true,
                 resizeMode: "contain",

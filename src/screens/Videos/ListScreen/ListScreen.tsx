@@ -78,6 +78,7 @@ const ListScreen = (): ReactElement => {
     loading: loadingContents,
   } = useQuery<GetContentsQuery>(GET_CONTENTS_QUERY, {
     variables: { locale: i18n.language?.toUpperCase() },
+    notifyOnNetworkStatusChange: true,
   });
   const {
     data: featuredContents,
