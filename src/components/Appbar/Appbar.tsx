@@ -1,7 +1,20 @@
 import React, { ReactElement } from "react";
 import { Appbar as PaperAppbar } from "react-native-paper";
 import { StackHeaderProps } from "@react-navigation/stack";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Image, StyleSheet } from "react-native";
 import theme from "../../core/theme";
+import { Auth } from "../../core/firebaseClient";
+import Avatar from "../Avatar";
+import logo from "../../assets/logo-white.png";
+
+const styles = StyleSheet.create({
+  image: {
+    flexGrow: 1,
+    resizeMode: "contain",
+    height: 24,
+  },
+});
 
 const Appbar = ({
   scene,
@@ -9,6 +22,7 @@ const Appbar = ({
   navigation,
 }: StackHeaderProps): ReactElement => {
   const { options } = scene.descriptor;
+
   let title;
 
   if (options.headerTitle !== undefined) {
@@ -19,16 +33,41 @@ const Appbar = ({
     title = scene.route.name;
   }
   return (
-    <PaperAppbar.Header theme={{ colors: { primary: theme.colors.surface } }}>
-      {previous && (
+    <PaperAppbar.Header
+      style={{
+        backgroundColor: previous ? theme.colors.surface : theme.colors.primary,
+      }}
+      dark={!previous}
+    >
+      {previous ? (
         <PaperAppbar.BackAction
           onPress={() => {
             navigation.pop();
           }}
-          color={theme.colors.primary}
+        />
+      ) : (
+        <TouchableOpacity
+          onPress={() =>
+            ((navigation as unknown) as { openDrawer: () => void }).openDrawer()
+          }
+        >
+          <Avatar
+            photoURL={Auth.currentUser?.photoURL}
+            displayName={Auth.currentUser?.displayName}
+          />
+        </TouchableOpacity>
+      )}
+      {previous ? (
+        <PaperAppbar.Content title={title} />
+      ) : (
+        <Image source={logo} style={styles.image} />
+      )}
+      {Auth.currentUser && scene.route.name !== "Notifications" && (
+        <PaperAppbar.Action
+          icon="bell"
+          onPress={() => navigation.navigate("Notifications")}
         />
       )}
-      <PaperAppbar.Content title={previous ? title : "Voke"} />
     </PaperAppbar.Header>
   );
 };

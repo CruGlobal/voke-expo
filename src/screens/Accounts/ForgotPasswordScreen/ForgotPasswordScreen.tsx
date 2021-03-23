@@ -1,15 +1,15 @@
 import React, { ReactElement } from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
-import Background from "../../components/Background";
-import Logo from "../../components/Logo";
-import Header from "../../components/Header";
-import TextInput from "../../components/TextInput";
-import theme from "../../core/theme";
-import Button from "../../components/Button";
-import firebaseClient from "../../core/firebaseClient";
+import Background from "../../../components/Background";
+import Logo from "../../../components/Logo";
+import Header from "../../../components/Header";
+import TextInput from "../../../components/TextInput";
+import theme from "../../../core/theme";
+import Button from "../../../components/Button";
+import { Auth } from "../../../core/firebaseClient";
 
 const styles = StyleSheet.create({
   back: {
@@ -44,7 +44,7 @@ const ForgotPasswordScreen = (): ReactElement => {
         validationSchema={ForgotPasswordSchema}
         onSubmit={async ({ email }, { setErrors }) => {
           try {
-            await firebaseClient.auth().sendPasswordResetEmail(email);
+            await Auth.sendPasswordResetEmail(email);
             navigation.navigate("Login");
           } catch (ex) {
             switch (ex.code) {
@@ -84,6 +84,7 @@ const ForgotPasswordScreen = (): ReactElement => {
               autoCompleteType="email"
               textContentType="emailAddress"
               keyboardType="email-address"
+              testID="email"
             />
 
             <Button
@@ -97,13 +98,6 @@ const ForgotPasswordScreen = (): ReactElement => {
           </>
         )}
       </Formik>
-
-      <TouchableOpacity
-        style={styles.back}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={styles.label}>← Back to login</Text>
-      </TouchableOpacity>
     </Background>
   );
 };

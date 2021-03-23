@@ -1,18 +1,18 @@
 import React, { ReactElement } from "react";
 import { useNavigation } from "@react-navigation/native";
-import Background from "../../components/Background";
-import Logo from "../../components/Logo";
-import Header from "../../components/Header";
-import Button from "../../components/Button";
-import Paragraph from "../../components/Paragraph";
-import welcomeScreen from "../../assets/welcomeScreen.png";
-import firebaseClient from "../../core/firebaseClient";
+import Background from "../../../components/Background";
+import Logo from "../../../components/Logo";
+import Header from "../../../components/Header";
+import Button from "../../../components/Button";
+import Paragraph from "../../../components/Paragraph";
+import welcomeScreen from "../../../assets/welcomeScreen.png";
+import { Auth } from "../../../core/firebaseClient";
 
-const HomeScreen = (): ReactElement => {
+const WelcomeScreen = (): ReactElement => {
   const navigation = useNavigation();
 
   const handleAnonymousPressed = (): void => {
-    firebaseClient.auth().signInAnonymously();
+    Auth.signInAnonymously();
   };
 
   return (
@@ -39,4 +39,4 @@ const HomeScreen = (): ReactElement => {
   );
 };
 
-export default HomeScreen;
+export default WelcomeScreen;

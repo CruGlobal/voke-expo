@@ -3,6 +3,7 @@
     "airbnb",
     "airbnb/hooks",
     "plugin:@typescript-eslint/recommended",
+    "plugin:testing-library/react",
     "plugin:prettier/recommended"
   ],
   "plugins": ["@typescript-eslint", "react", "prettier"],
@@ -40,6 +41,24 @@
     "react/require-default-props": "off",
     "react/style-prop-object": ["error", {
       "allow": ["StatusBar"]
+    }],
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": ["**/*.{test,stories}.{ts,tsx}","storybook/*.{ts,tsx}"]
     }]
-  }
+  },
+  "overrides": [
+    { 
+      "files": ["**/*.test.{ts,tsx}"],
+      "rules": {
+        "prefer-promise-reject-errors": "off",
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+      }
+    },
+    { 
+      "files": ["storybook/storyLoader.js"],
+      "rules": {
+        "global-require": "off"
+      }
+    }
+  ]
 }

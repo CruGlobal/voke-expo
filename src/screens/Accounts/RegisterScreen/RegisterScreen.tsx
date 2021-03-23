@@ -1,28 +1,26 @@
 import React, { ReactElement } from "react";
-import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
-import firebaseClient from "../../core/firebaseClient";
-import Background from "../../components/Background";
-import Logo from "../../components/Logo";
-import Header from "../../components/Header";
-import Button from "../../components/Button";
-import TextInput from "../../components/TextInput";
-import theme from "../../core/theme";
+import { Auth } from "../../../core/firebaseClient";
+import Background from "../../../components/Background";
+import Logo from "../../../components/Logo";
+import Header from "../../../components/Header";
+import Button from "../../../components/Button";
+import TextInput from "../../../components/TextInput";
+import theme from "../../../core/theme";
 
 const styles = StyleSheet.create({
-  forgotPassword: {
-    width: "100%",
-    alignItems: "flex-end",
-    marginBottom: 24,
+  label: {
+    color: theme.colors.text,
+  },
+  button: {
+    marginTop: 24,
   },
   row: {
     flexDirection: "row",
     marginTop: 4,
-  },
-  label: {
-    color: theme.colors.secondary,
   },
   link: {
     fontWeight: "bold",
@@ -30,48 +28,44 @@ const styles = StyleSheet.create({
   },
 });
 
-const LoginSchema = Yup.object().shape({
+const RegisterSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
-  password: Yup.string().required("Required"),
+  password: Yup.string().min(6).required("Required"),
 });
 
-const LoginScreen = (): ReactElement => {
+const RegisterScreen = (): ReactElement => {
   const navigation = useNavigation();
 
   return (
     <Background>
       <Logo />
 
-      <Header>Welcome back.</Header>
+      <Header>Create Account</Header>
 
       <Formik
         initialValues={{
           email: "",
           password: "",
         }}
-        validationSchema={LoginSchema}
+        validationSchema={RegisterSchema}
         onSubmit={async ({ email, password }, { setErrors }) => {
           try {
-            await firebaseClient
-              .auth()
-              .signInWithEmailAndPassword(email, password);
+            await Auth.createUserWithEmailAndPassword(email, password);
           } catch (ex) {
             switch (ex.code) {
-              case "auth/user-disabled":
+              case "auth/email-already-in-use":
                 setErrors({
-                  email:
-                    "This email address account has been disabled. Please try again.",
+                  email: "Email address already in use. Please try again.",
                 });
                 break;
-              case "auth/user-not-found":
+              case "auth/invalid-email":
                 setErrors({
-                  email: "Email address not found. Please try again.",
+                  email: "Email address invalid. Please try again.",
                 });
                 break;
-              case "auth/wrong-password":
+              case "auth/weak-password":
                 setErrors({
-                  password:
-                    "password does not match the given email. Please try again.",
+                  password: "password is not strong enough. Please try again.",
                 });
                 break;
               default:
@@ -118,33 +112,26 @@ const LoginScreen = (): ReactElement => {
               secureTextEntry
             />
 
-            <View style={styles.forgotPassword}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("ForgotPassword")}
-              >
-                <Text style={styles.label}>Forgot your password?</Text>
-              </TouchableOpacity>
-            </View>
-
             <Button
               mode="contained"
               onPress={handleSubmit}
               disabled={!isValid || isSubmitting}
+              style={styles.button}
             >
-              Login
+              Sign Up
             </Button>
           </>
         )}
       </Formik>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text style={styles.link}>Sign up</Text>
+        <Text style={styles.label}>Already have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.link}>Login</Text>
         </TouchableOpacity>
       </View>
     </Background>
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
