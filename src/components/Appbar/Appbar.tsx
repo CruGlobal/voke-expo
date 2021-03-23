@@ -62,7 +62,7 @@ const Appbar = ({
       ) : (
         <Image source={logo} style={styles.image} />
       )}
-      {Auth.currentUser && scene.route.name !== "Notifications" && (
+      {Auth.currentUser && !scene.route.name.startsWith("Notifications") && (
         <PaperAppbar.Action
           icon="bell"
           onPress={() => navigation.navigate("Notifications")}

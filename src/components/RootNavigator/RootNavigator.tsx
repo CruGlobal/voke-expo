@@ -51,6 +51,11 @@ const StackNavigator = (): ReactElement => {
       <Stack.Screen name="Profile" component={Accounts.ProfileScreen} />
       <Stack.Screen name="Notifications" component={Notifications.ListScreen} />
       <Stack.Screen
+        name="Notifications.Ask"
+        component={Notifications.AskScreen}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
         name="Welcome"
         component={Accounts.WelcomeScreen}
         options={{ headerShown: false }}

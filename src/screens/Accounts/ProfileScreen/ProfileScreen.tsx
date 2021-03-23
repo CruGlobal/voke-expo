@@ -127,7 +127,7 @@ const ProfileScreen = (): ReactElement => {
             </TouchableOpacity>
             <TextInput
               label="Display Name"
-              returnKeyType="next"
+              returnKeyType="done"
               onChangeText={handleChange("displayName")}
               onBlur={handleBlur("displayName")}
               value={values.displayName}
