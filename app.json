@@ -5,6 +5,7 @@
     "slug": "voke-expo",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "backgroundColor": "#000000",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -19,7 +20,8 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "0.0.1",
-      "bundleIdentifier": "org.cru.voke-expo"
+      "bundleIdentifier": "org.cru.voke-expo",
+      "requireFullScreen": true
     },
     "android": {
       "adaptiveIcon": {
