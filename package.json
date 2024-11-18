@@ -40,7 +40,7 @@
     "expo-localization": "~9.1.0",
     "expo-screen-orientation": "~2.1.0",
     "expo-status-bar": "~1.0.3",
-    "firebase": "7.9.0",
+    "firebase": "10.9.0",
     "formik": "^2.2.6",
     "graphql": "^15.5.0",
     "i18next": "^19.9.2",
